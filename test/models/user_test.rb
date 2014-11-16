@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-  	@user = User.new(username: "Test User", email: "test@test.biz", password: "test123")
+  	@user = User.new(username: "Test User", email: "test@test.biz", password: "test123", password_confirmation: "test123")
   end
 
   test "should be valid" do
@@ -21,6 +21,12 @@ class UserTest < ActiveSupport::TestCase
 
   test "password should be present" do 
   	@user.password = "    "
+  	assert_not @user.valid?
+  end
+
+  test "mismatched password confirmation should be invalid" do 
+  	@user.password = "test123"
+  	@user.password_confirmation = "test456"
   	assert_not @user.valid?
   end
 end
